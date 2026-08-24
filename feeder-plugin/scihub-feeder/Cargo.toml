@@ -1,0 +1,40 @@
+[package]
+name = "scihub-feeder"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+# Sci-Hub. Opt-in: soft-skips unless SCIHUB_MIRRORS is set.
+# Upstream: Sci-Hub mirrors (operator-configured)
+
+[lib]
+name = "scihub_feeder"
+path = "src/lib.rs"
+
+[[bin]]
+name = "scihub-feeder"
+path = "src/main.rs"
+
+[dependencies]
+# The SDK is a dependency, not a vendored copy. Pinned by rev until the first
+# tag; see docs/project-architecture/feeder-architecture.md §8.
+meta-feeder-sdk = { git = "https://github.com/worph/meta-feeder-sdk", rev = "d2c6ef4c1887be9ae9f92ebedc39a810aa57c7e4" }
+
+tokio = { version = "1.40", features = ["full"] }
+axum = { version = "0.7", features = ["json"] }
+anyhow = "1"
+async-trait = "0.1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+reqwest = { version = "0.12", features = ["json", "rustls-tls", "stream"], default-features = false }
+futures = "0.3"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+bytes = "1"
+
+[dev-dependencies]
+wiremock = "0.6"
+tempfile = "3"
+tokio = { version = "1.40", features = ["full", "test-util"] }
