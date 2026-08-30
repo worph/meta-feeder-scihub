@@ -471,7 +471,11 @@ fn into_discovery_record(doi: &str) -> DiscoveryRecord {
     let mut fields: BTreeMap<String, String> = BTreeMap::new();
     fields.insert("title".to_string(), format!("DOI: {doi}"));
     fields.insert("fileType".to_string(), "document".to_string());
+    // `domain` travels with `contentKind` (METADATA_KEYS.md §1) — the key
+    // every client filters its wall on. Stamped literally: this feeder pins
+    // the SDK by git tag and cannot reach `meta_feeder_sdk::domain`.
     fields.insert("contentKind".to_string(), "paper".to_string());
+    fields.insert("domain".to_string(), "science".to_string());
     fields.insert("format".to_string(), "pdf".to_string());
     fields.insert("sourceUrl".to_string(), format!("https://doi.org/{doi}"));
     fields.insert(
